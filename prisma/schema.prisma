@@ -1,0 +1,38 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider          = "postgresql"
+    url               = env("DATABASE_URL")
+    shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model user {
+    id         Int      @id @default(autoincrement())
+    email      String   @unique
+    password   String
+    first_name String
+    last_name  String
+    gender     Gender
+    dob        DateTime
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+    last_login DateTime @default(now())
+    login      login?
+}
+
+model login {
+    id                      String   @id @default(cuid())
+    access_token            String   @unique
+    refresh_token           String
+    access_token_created_at DateTime
+    user                    user     @relation(fields: [user_id], references: [id])
+    user_id                 Int      @unique
+}
+
+enum Gender {
+    male
+    female
+    others
+}
