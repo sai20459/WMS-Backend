@@ -41,7 +41,7 @@ async function authenticateMiddleware(req, res, next) {
     });
   }
 
-  const isValidUser = await prisma.User.findUnique({
+  const isValidUser = await prisma.user.findUnique({
     where: { id: tokenData.id },
   });
   if (!isValidUser)

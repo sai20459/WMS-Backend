@@ -31,6 +31,20 @@ model login {
     user_id                 Int      @unique
 }
 
+model products {
+    id          Int    @id @default(autoincrement())
+    name        String
+    description String
+    quantity    Int
+    price       Int
+}
+
+model warehouse {
+    id       Int    @id @default(autoincrement())
+    name     String
+    location String
+}
+
 enum Gender {
     male
     female
