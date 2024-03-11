@@ -31,18 +31,114 @@ model login {
     user_id                 Int      @unique
 }
 
-model products {
-    id          Int    @id @default(autoincrement())
-    name        String
-    description String
-    quantity    Int
-    price       Int
+model Provider {
+    id      Int     @id @default(autoincrement())
+    name    String
+    address String
+    order   order[]
+}
+
+model order {
+    id          Int           @id @default(autoincrement())
+    date        DateTime      @default(now())
+    provider    Provider      @relation(fields: [providerId], references: [id], onDelete: Cascade)
+    providerId  Int
+    orderDetail orderDetail[]
+}
+
+model orderDetail {
+    id           Int       @id @default(autoincrement())
+    quality      Int
+    expectedDate DateTime  @default(now())
+    actualDate   DateTime  @default(now())
+    order        order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    orderId      Int
+    productId    Int
+    product      product   @relation(fields: [productId], references: [id])
+    warehouseId  Int
+    warehouse    warehouse @relation(fields: [warehouseId], references: [id])
+}
+
+model transfer {
+    id           Int       @id @default(autoincrement())
+    quantity     Int
+    sentDate     DateTime  @default(now())
+    receivedDate DateTime  @default(now())
+    productId    Int
+    product      product   @relation(fields: [productId], references: [id])
+    warehouseId  Int
+    warehouse    warehouse @relation(fields: [warehouseId], references: [id])
+}
+
+model product {
+    id              Int               @id @default(autoincrement())
+    name            String
+    description     String
+    quantity        Int
+    price           Int
+    barcode         Int
+    orderDetail     orderDetail[]
+    deliveryDetails deliveryDetails[]
+    inventory       inventory[]
+    transfer        transfer[]
+}
+
+model customer {
+    id       Int        @id @default(autoincrement())
+    name     String
+    mobile   Int
+    email    String
+    address  String?
+    delivery delivery[]
+}
+
+model delivery {
+    id              Int               @id @default(autoincrement())
+    salesDate       DateTime          @default(now())
+    customerId      Int
+    customer        customer          @relation(fields: [customerId], references: [id], onDelete: Cascade)
+    deliveryDetails deliveryDetails[]
+}
+
+model deliveryDetails {
+    id           Int       @id @default(autoincrement())
+    quantity     Int
+    expectedDate DateTime  @default(now())
+    actualDate   DateTime  @default(now())
+    deliverId    Int
+    delivery     delivery  @relation(fields: [deliverId], references: [id], onDelete: Cascade)
+    productId    Int
+    product      product   @relation(fields: [productId], references: [id])
+    warehouseId  Int
+    warehouse    warehouse @relation(fields: [warehouseId], references: [id])
+}
+
+model location {
+    id        Int         @id @default(autoincrement())
+    name      String
+    address   String
+    warehouse warehouse[]
+}
+
+model inventory {
+    id                 Int     @id @default(autoincrement())
+    quantityAvailabele Int
+    minStockLevel      Int
+    maxStockLevel      Int
+    ReorderPoint       Int
+    productId          Int
+    product            product @relation(fields: [productId], references: [id])
 }
 
 model warehouse {
-    id       Int    @id @default(autoincrement())
-    name     String
-    location String
+    id              Int               @id @default(autoincrement())
+    name            String
+    address         String
+    locationId      Int
+    location        location          @relation(fields: [locationId], references: [id], onDelete: Cascade)
+    orderDetail     orderDetail[]
+    deliveryDetails deliveryDetails[]
+    transfer        transfer[]
 }
 
 enum Gender {

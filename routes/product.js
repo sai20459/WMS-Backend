@@ -5,15 +5,14 @@ const { BadRequestError } = require("../errors/errors");
 const router = Router();
 
 router.get("/", async (req, res, next) => {
-  const products = await prisma.products.findMany();
-
-  res.data = products;
+  const product = await prisma.product.findMany();
+  res.data = product;
   next();
 });
 
 router.post("/", async (req, res, next) => {
   const { name, price, description, quantity } = req.body;
-  const product = await prisma.products.create({
+  const product = await prisma.product.create({
     data: {
       name,
       description,
@@ -33,7 +32,7 @@ router.get("/:id", async (req, res, next) => {
     throw new BadRequestError(
       "This request cannot be processed without a valid ID."
     );
-  const product = await prisma.products.findUnique({
+  const product = await prisma.product.findUnique({
     where: { id: Number(id) },
   });
   res.data = product;
@@ -48,7 +47,7 @@ router.put("/:id", async (req, res, next) => {
     throw new BadRequestError(
       "This request cannot be processed without a valid ID."
     );
-  const product = await prisma.products.update({
+  const product = await prisma.product.update({
     where: { id: id },
     data: {
       name,
@@ -67,10 +66,12 @@ router.delete("/:id", async (req, res, next) => {
       "This request cannot be processed without a valid ID."
     );
 
-  const product = await prisma.products.delete({ where: { id: Number(id) } });
-  console.log(product);
+  const product = await prisma.product.delete({ where: { id: Number(id) } });
 
-  next({ status: "200", message: "Product deleted successfully" });
+  next({
+    status: 200,
+    message: `${product.name} Product deleted successfully`,
+  });
 });
 
 module.exports = router;

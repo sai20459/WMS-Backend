@@ -14,7 +14,8 @@ const passport = require("passport");
 // //imports
 const auth = require("./routes/auth");
 const user = require("./routes/user");
-const product = require("./routes/products");
+const product = require("./routes/product");
+const customer = require("./routes/customer");
 
 const errorHandlerMiddleware = require("./middleware/errorHandleMiddleware");
 const { authenticateMiddleware } = require("./middleware/authmiddleware");
@@ -96,8 +97,9 @@ app.use(passport.initialize());
 
 // //routes
 app.use("/api/auth", auth);
-app.use("/api/user/", authenticateMiddleware, user);
-app.use("/api/products", authenticateMiddleware, product);
+app.use("/api/user", authenticateMiddleware, user);
+app.use("/api/product", authenticateMiddleware, product);
+app.use("/api/customer", authenticateMiddleware, customer);
 
 // app.use((req, res, next) => {
 //   res.status(405).json({ error: `Method ${req.method} not allowed` });
