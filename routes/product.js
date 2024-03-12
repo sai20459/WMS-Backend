@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const prisma = require("../services/prisma");
 const { BadRequestError } = require("../errors/errors");
+const { productValidator } = require("../validations/product");
 
 const router = Router();
 
@@ -14,7 +15,8 @@ router.get("/", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  const { name, price, description, quantity, barcode } = req.body;
+  const { name, price, description, quantity, barcode } =
+    await productValidator.validateAsync(req.body);
   const product = await prisma.product.create({
     data: {
       name,
@@ -39,13 +41,15 @@ router.get("/:id", async (req, res, next) => {
   const product = await prisma.product.findUnique({
     where: { id: Number(id) },
   });
+  if (!product) throw new BadRequestError(`product with this ${id} not found`);
   res.data = product;
   next();
 });
 
 router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
-  const { name, price, description, quantity, barcode } = req.body;
+  const { name, price, description, quantity, barcode } =
+    await productValidator.validateAsync(req.body);
 
   if (!id)
     throw new BadRequestError(
