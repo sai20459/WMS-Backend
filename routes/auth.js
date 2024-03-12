@@ -66,10 +66,10 @@ router.post("/signup", async (req, res, next) => {
   next();
 });
 
-router.get("/", async (req, res, next) => {
-  const users = await prisma.user.findMany();
-  res.data = { users };
-  next();
-});
+// router.get("/", async (req, res, next) => {
+//   const users = await prisma.user.findMany();
+//   res.data = { users };
+//   next();
+// });
 
 module.exports = router;

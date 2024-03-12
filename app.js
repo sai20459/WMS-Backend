@@ -76,6 +76,7 @@ app.use(
 // // middleware
 // Middleware to parse JSON request bodies
 app.use(express.json());
+
 // app.use(decryptRequest);
 // app.use(
 //   helmet.expectCt({
@@ -93,7 +94,7 @@ app.use((req, res, next) => {
 });
 
 // //passport - google auth
-app.use(passport.initialize());
+// app.use(passport.initialize());
 
 // //routes
 app.use("/api/auth", auth);
