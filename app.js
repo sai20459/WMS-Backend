@@ -21,6 +21,10 @@ const provider = require("./routes/provider");
 const orderdetails = require("./routes/orderdetails");
 const warehouse = require("./routes/warehouse");
 const location = require("./routes/location");
+const transfer = require("./routes/transfer");
+const delivery = require("./routes/delivery");
+const deliverydetails = require("./routes/deliverydetails");
+const inventory = require("./routes/inventory");
 
 const errorHandlerMiddleware = require("./middleware/errorHandleMiddleware");
 const { authenticateMiddleware } = require("./middleware/authmiddleware");
@@ -111,6 +115,10 @@ app.use("/api/provider", authenticateMiddleware, provider);
 app.use("/api/orderdetails", authenticateMiddleware, orderdetails);
 app.use("/api/warehouse", authenticateMiddleware, warehouse);
 app.use("/api/location", authenticateMiddleware, location);
+app.use("/api/transfer", authenticateMiddleware, transfer);
+app.use("/api/delivery", authenticateMiddleware, delivery);
+app.use("/api/deliverydetails", authenticateMiddleware, deliverydetails);
+app.use("/api/inventory", authenticateMiddleware, inventory);
 
 // app.use((req, res, next) => {
 //   res.status(405).json({ error: `Method ${req.method} not allowed` });
