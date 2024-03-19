@@ -16,6 +16,11 @@ const auth = require("./routes/auth");
 const user = require("./routes/user");
 const product = require("./routes/product");
 const customer = require("./routes/customer");
+const order = require("./routes/order");
+const provider = require("./routes/provider");
+const orderdetails = require("./routes/orderdetails");
+const warehouse = require("./routes/warehouse");
+const location = require("./routes/location");
 
 const errorHandlerMiddleware = require("./middleware/errorHandleMiddleware");
 const { authenticateMiddleware } = require("./middleware/authmiddleware");
@@ -101,6 +106,11 @@ app.use("/api/auth", auth);
 app.use("/api/user", authenticateMiddleware, user);
 app.use("/api/product", authenticateMiddleware, product);
 app.use("/api/customer", authenticateMiddleware, customer);
+app.use("/api/order", authenticateMiddleware, order);
+app.use("/api/provider", authenticateMiddleware, provider);
+app.use("/api/orderdetails", authenticateMiddleware, orderdetails);
+app.use("/api/warehouse", authenticateMiddleware, warehouse);
+app.use("/api/location", authenticateMiddleware, location);
 
 // app.use((req, res, next) => {
 //   res.status(405).json({ error: `Method ${req.method} not allowed` });
